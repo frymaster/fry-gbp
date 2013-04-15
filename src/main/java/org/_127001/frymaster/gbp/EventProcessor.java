@@ -12,19 +12,7 @@ public class EventProcessor implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerLogin(PlayerLoginEvent event) {
-		boolean b = event.getPlayer().hasPermission("group.Contrib");
-		if (b==true) {
-			plugin.getLogger().info("Pre-permissions calculation: Player has permission");
-		} else {
-			plugin.getLogger().info("Pre-permissions calculation: Player has not permission");
-		}
 		plugin.addPermissions(event.getPlayer());
-		b = event.getPlayer().hasPermission("group.Contrib");
-		if (b==true) {
-			plugin.getLogger().info("Post-permissions calculation: Player has permission");
-		} else {
-			plugin.getLogger().info("Post-permissions calculation: Player has not permission");
-		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
