@@ -13,10 +13,10 @@ import org.bukkit.entity.Player;
 
 public class FryGroup implements Comparable<FryGroup> {
 
-	private Integer priority = 0;
+	private int priority = 0;
 	private String name = null;
 	private AbstractMap<String, Boolean> permissions;
-	private Boolean defaultGroup = false;
+	private boolean defaultGroup = false;
 	private String inherit = null;
 	private String fileName = null;
 	private File file = null;
@@ -116,14 +116,14 @@ public class FryGroup implements Comparable<FryGroup> {
 	/**
 	 * @return the priority
 	 */
-	public Integer getPriority() {
+	public int getPriority() {
 		return priority;
 	}
 
 	/**
 	 * @param priority the priority to set
 	 */
-	public void setPriority(Integer priority) {
+	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
@@ -150,7 +150,7 @@ public class FryGroup implements Comparable<FryGroup> {
 
 	@Override
 	public int compareTo(FryGroup arg0) {
-		return this.getPriority().compareTo(arg0.getPriority());
+		return Integer.compare(this.getPriority(), arg0.getPriority());
 	}
 	
 	public boolean equals(FryGroup arg0) {
@@ -158,7 +158,7 @@ public class FryGroup implements Comparable<FryGroup> {
 	}
 	
         @SuppressWarnings("OverridableMethodCallInConstructor")
-	public FryGroup(String name, Integer priority, String inherit, String file, boolean isDefault) {
+	public FryGroup(String name, int priority, String inherit, String file, boolean isDefault) {
 		super();
 		this.setPriority(priority);
 		this.setName(name);
