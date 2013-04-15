@@ -1,7 +1,6 @@
 name: fry-gbp
-version: 0.1
+version: "${project.version}"
 description: Permissions plugin focussed around easy administering of group memberships
 author: frymaster@127001.org
 website: http://frymaster.127001.org
-
 main: org._127001.frymaster.gbp.Gbp
