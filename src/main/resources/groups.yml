@@ -1,0 +1,50 @@
+#Definition and permissions for the groups
+
+#First, the meta-groups
+#These cannot be removed, and you can't define their membership
+#Everyone is in "all", and all ops are in "op"
+
+#Priority determines what order permissions are evaluated in
+#Lower numbers are evaluated first.  Whichever group gets the last word, wins
+#It probably makes sense to give the meta-groups low priority, so your more specific
+#groups can override
+#If two groups have the same priority behaviour is NOT guaranteed
+#If a priority is not specified, 0 will be used
+
+all:
+  permissions:
+  priority: 50
+  
+ops:
+  permissions:
+  priority: 60
+  
+#Use "inherit" to include permissions from another group
+#Set "default: true" to make a default group
+#Users are considered members of a default group if they are members of the group
+#OR if they are not explicit members of any group
+
+#file sets the filename to use for storing memberships.  You don't need this if
+#  the group is only used for defaults or inheriting
+#Examples:
+
+#guests:
+#  default: true
+#  priority: 100
+#  permissions:
+#    - -someProtectionPlugin.build
+
+#members:
+#  priority: 110
+#  file: members.txt
+#  permissions:
+#    - someTeleportPlugin.tp
+#    - -somePlugin.modPermission
+
+#mods:
+#  priority: 120
+#  file: mods.txt
+#  inherit: members
+#  permissions:
+#    - bukkit.command.kick
+#    - somePlugin.modPermission

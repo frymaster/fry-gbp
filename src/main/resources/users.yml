@@ -1,0 +1,15 @@
+#Define individual user overrides here
+#Permissions given or negated here override all others
+#You can also grant or remove group membership here;
+#   this will override group membership assigned in the normal way,
+#   however you can't override the meta-groups
+#for example:
+#notch:
+#  permissions:
+#    - become.herobrine
+#    - -shave.beard
+#  groups:
+#    - mojang
+#    - -scumbags
+
+# Note that unlike in the group files, the usernames here are CASE SENSITIVE
