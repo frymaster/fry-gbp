@@ -25,15 +25,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 // TODO: Allow looking up group membership using SQL queries
 // TODO: Vault integration
 public final class Gbp extends JavaPlugin {
-    
+
     private FileConfiguration usersConfig = null;
     private FileConfiguration groupsConfig = null;
     private File usersFile = null;
     private File groupsFile = null;
-    private List<FryGroup> groups = new ArrayList<FryGroup>();
+    private AbstractMap<String, FryGroup> groups = new HashMap<String, FryGroup>();
     private AbstractMap<String, PermissionAttachment> players = new HashMap<String, PermissionAttachment>();
     static Plugin plugin;
-    
+
     @Override
     public void onEnable() {
         Gbp.plugin = this;
@@ -45,7 +45,7 @@ public final class Gbp extends JavaPlugin {
             addPermissions(p);
         }
     }
-    
+
     @Override
     public void onDisable() {
         for (Map.Entry<String, PermissionAttachment> entry : players.entrySet()) {
@@ -58,24 +58,32 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Gets the group with the specified name
+     * Gets
+     * the
+     * group
+     * with
+     * the
+     * specified
+     * name
      *
-     * @param group Name of the group
+     * @param
+     * group
+     * Name
+     * of
+     * the
+     * group
      *
-     * @return The group object, or null
+     * @return
+     * The
+     * group
+     * object,
+     * or
+     * null
      */
-    public FryGroup getGroup(String group) {
-        int i = groups.indexOf(group);
-        if (i > -1) {
-            return groups.get(i);
-        } else {
-            return null;
-        }
-        
-    }
-
     /**
-     * @return the usersConfig
+     * @return
+     * the
+     * usersConfig
      */
     public FileConfiguration getUsersConfig() {
         if (usersConfig == null) {
@@ -85,7 +93,9 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * @return the groupsConfig
+     * @return
+     * the
+     * groupsConfig
      */
     public FileConfiguration getGroupsConfig() {
         if (groupsConfig == null) {
@@ -95,7 +105,10 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Reload the YML files
+     * Reload
+     * the
+     * YML
+     * files
      */
     public void reloadConfigFiles() {
         if (usersFile == null) {
@@ -106,7 +119,7 @@ public final class Gbp extends JavaPlugin {
         }
         usersConfig = YamlConfiguration.loadConfiguration(usersFile);
         usersConfig.setDefaults(YamlConfiguration.loadConfiguration(this.getResource("users.yml")));
-        
+
         if (groupsFile == null) {
             groupsFile = new File(getDataFolder(), "groups.yml");
         }
@@ -118,9 +131,42 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Rebuild the list of groups as well as what permissions each group will
-     * apply If the config files have already been parsed they are not reloaded
-     * Does not cause the permissions on existing players to change
+     * Rebuild
+     * the
+     * list
+     * of
+     * groups
+     * as
+     * well
+     * as
+     * what
+     * permissions
+     * each
+     * group
+     * will
+     * apply
+     * If
+     * the
+     * config
+     * files
+     * have
+     * already
+     * been
+     * parsed
+     * they
+     * are
+     * not
+     * reloaded
+     * Does
+     * not
+     * cause
+     * the
+     * permissions
+     * on
+     * existing
+     * players
+     * to
+     * change
      */
     public void recalculateGroups() {
         FileConfiguration gc = this.getGroupsConfig();
@@ -132,33 +178,93 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Returns the group object if it exists, or tries to create it if it does
-     * not. When calling this, the breadcrumbs parameter should always be null
-     * This is used internally in recursive calls to track possible inheritance
+     * Returns
+     * the
+     * group
+     * object
+     * if
+     * it
+     * exists,
+     * or
+     * tries
+     * to
+     * create
+     * it
+     * if
+     * it
+     * does
+     * not.
+     * When
+     * calling
+     * this,
+     * the
+     * breadcrumbs
+     * parameter
+     * should
+     * always
+     * be
+     * null
+     * This
+     * is
+     * used
+     * internally
+     * in
+     * recursive
+     * calls
+     * to
+     * track
+     * possible
+     * inheritance
      * loops
      *
-     * @param group Name of the group to return
-     * @param breadcrumbs Should always be null
-     * @return The group object, or null if the group is not specified in the
-     * configuration files
+     * @param
+     * group
+     * Name
+     * of
+     * the
+     * group
+     * to
+     * return
+     * @param
+     * breadcrumbs
+     * Should
+     * always
+     * be
+     * null
+     * @return
+     * The
+     * group
+     * object,
+     * or
+     * null
+     * if
+     * the
+     * group
+     * is
+     * not
+     * specified
+     * in
+     * the
+     * configuration
+     * files
      */
     private FryGroup discoverGroup(String group, List<String> breadcrumbs) {
-        
-        int i = groups.indexOf(group);
-        if (i > -1) {
-            return groups.get(i);
+
+        FryGroup fg = groups.get(group);
+        if (fg != null) {
+            return fg;
         }
-        
+
         ConfigurationSection gc = this.getGroupsConfig().getConfigurationSection(group);
         if (gc == null) {
             return null;
         }
-        Integer priority = gc.getInt("priority", 0);
+        int priority = gc.getInt("priority", 0);
         boolean isDefault = gc.getBoolean("default", false);
         String inherit = gc.getString("inherit", null);
         String file = gc.getString("file", null);
-        FryGroup fg = new FryGroup(group, priority, inherit, file, isDefault);
-        
+        fg = new FryGroup(group, priority, inherit, file, isDefault);
+
         AbstractMap<String, Boolean> perms = fg.getPermissions();
         if (inherit != null) {
             if (breadcrumbs == null) {
@@ -178,7 +284,7 @@ public final class Gbp extends JavaPlugin {
                 }
             }
         }
-        
+
         List<?> newPermissions = gc.getList("permissions");
         if (newPermissions != null) {
             for (Object o : newPermissions) {
@@ -190,19 +296,19 @@ public final class Gbp extends JavaPlugin {
                 }
             }
         }
-        
-        groups.add(fg);
+
+        groups.put(group, fg);
         return fg;
-        
+
     }
-    
+
     public void addPermissions(Player player) {
         boolean isInNonMetaGroups = false;
         ConfigurationSection pc = this.getUsersConfig().getConfigurationSection(player.getName());
         List<FryGroup> playerGroups = new ArrayList<FryGroup>();
         // Add all groups the player is a member of
-        for (FryGroup group : this.groups) {
-            if (group.isMember(player)== true) {
+        for (FryGroup group : this.groups.values()) {
+            if (group.isMember(player) == true) {
                 if (group.isMetaGroup() == false) {
                     isInNonMetaGroups = true;
                 }
@@ -211,7 +317,7 @@ public final class Gbp extends JavaPlugin {
         }
         // If the player is not in any explicit groups, add default groups
         if (isInNonMetaGroups == false) {
-            for (FryGroup group : this.groups) {
+            for (FryGroup group : this.groups.values()) {
                 if (group.isDefaultGroup()) {
                     playerGroups.add(group);
                 }
@@ -226,6 +332,7 @@ public final class Gbp extends JavaPlugin {
                     String groupName = o.toString();
                     if (groupName.startsWith("-")) {
                         groupName = groupName.substring(1);
+                        // Use an iterator here because you can remove in an iterator
                         for (Iterator<FryGroup> i = playerGroups.iterator(); i.hasNext();) {
                             FryGroup fg = i.next();
                             if (fg.getName().equals(groupName)) {
@@ -235,17 +342,14 @@ public final class Gbp extends JavaPlugin {
                             }
                         }
                     } else {
-                        for (FryGroup fg : this.groups) {
-                            if (fg.getName().equals(groupName)) {
-                                // Could end up with more than one copy of the group... not actually a problem since they'll have identical effect
-                                playerGroups.add(fg);
-                                break;
-                            }
+                        FryGroup fg = groups.get(groupName);
+                        if (fg != null) {
+                            playerGroups.add(fg);
                         }
                     }
                 }
             }
-            
+
         }
 
         // Put groups in priority order
@@ -258,7 +362,7 @@ public final class Gbp extends JavaPlugin {
         }
 
         // Add player-specific permission overrides
-        if (pc != null) {            
+        if (pc != null) {
             List<?> permissionOverrides = pc.getList("permissions");
             if (permissionOverrides != null) {
                 for (Object o : permissionOverrides) {
@@ -276,15 +380,15 @@ public final class Gbp extends JavaPlugin {
         // Add permissions to player
         PermissionAttachment pa = player.addAttachment(this);
         for (Map.Entry<String, Boolean> entry : permissions.entrySet()) {
-            pa.setPermission(entry.getKey(), entry.getValue());            
+            pa.setPermission(entry.getKey(), entry.getValue());
         }
-        
+
         players.put(player.getName(), pa);
-        
-        
-        
+
+
+
     }
-    
+
     public void removePermissions(Player player) {
         PermissionAttachment pa = players.get(player.getName());
         if (pa != null) {
