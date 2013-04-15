@@ -171,9 +171,11 @@ public final class Gbp extends JavaPlugin {
             } else {
                 FryGroup parent = discoverGroup(inherit, breadcrumbs);
                 if (parent == null) {
-                    getLogger().log(Level.SEVERE, "Group:{0}tried to set a non-existent parent {1} - ignoring inherit setting", new Object[]{group, inherit});
+                    getLogger().log(Level.SEVERE, "Group: {0} tried to set a non-existent parent {1} - ignoring inherit setting", new Object[]{group, inherit});
+                    fg.setInherit(null);
+                } else {
+                    perms.putAll(parent.getPermissions());
                 }
-                perms.putAll(parent.getPermissions());
             }
         }
         
@@ -228,13 +230,16 @@ public final class Gbp extends JavaPlugin {
                             FryGroup fg = i.next();
                             if (fg.getName().equals(groupName)) {
                                 i.remove();
+                                // Don't break here, because between proper group membership and user overrides there may be two copies of a group
+                                // (Though if a user is both adding AND removing a group membership in user.yml things are already beyond hope)
                             }
                         }
                     } else {
                         for (FryGroup fg : this.groups) {
                             if (fg.getName().equals(groupName)) {
-                                // Could end up with more than one copy of the group... not actually a problem
+                                // Could end up with more than one copy of the group... not actually a problem since they'll have identical effect
                                 playerGroups.add(fg);
+                                break;
                             }
                         }
                     }
