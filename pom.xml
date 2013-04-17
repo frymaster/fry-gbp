@@ -3,8 +3,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org._127001.frymaster.gbp</groupId>
+    <groupId>org._127001.frymaster</groupId>
     <artifactId>fry-gbp</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.1</version>
     <name>fry-gbp</name>
     <url>http://frymaster.127001.org/</url>
