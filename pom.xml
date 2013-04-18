@@ -47,7 +47,7 @@
         </profile>
     </profiles>
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
