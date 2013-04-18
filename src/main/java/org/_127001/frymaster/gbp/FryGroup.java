@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
@@ -15,24 +17,17 @@ public class FryGroup implements Comparable<FryGroup> {
 
     private int priority = 0;
     private String name = null;
-    private AbstractMap<String, Boolean> permissions;
+    private Map<String, Boolean> permissions;
     private boolean defaultGroup = false;
-    private String inherit = null;
+    private List<String> inheritList = null;
     private String fileName = null;
     private File file = null;
 
     /**
-     * @return the group this group inherits permissions from, if any
+     * @return the list of groups this group inherits permissions from, if any
      */
-    public String getInherit() {
-        return inherit;
-    }
-
-    /**
-     * @param inherit set what group this group will inherit permissions from
-     */
-    public void setInherit(String inherit) {
-        this.inherit = inherit;
+    public List<String> inheritList() {
+        return inheritList;
     }
 
     /**
@@ -128,7 +123,7 @@ public class FryGroup implements Comparable<FryGroup> {
     /**
      * @return the permissions
      */
-    public AbstractMap<String, Boolean> getPermissions() {
+    public Map<String, Boolean> permissions() {
         return permissions;
     }
 
@@ -172,11 +167,11 @@ public class FryGroup implements Comparable<FryGroup> {
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public FryGroup(String name, int priority, String inherit, String file, boolean isDefault) {
+    public FryGroup(String name, int priority, List<String> inherit, String file, boolean isDefault) {
         super();
         this.setPriority(priority);
         this.setName(name);
-        this.setInherit(inherit);
+        this.inheritList = inherit;
         this.setGroupIsDefault(isDefault);
         this.setFileName(file);
 
@@ -186,7 +181,7 @@ public class FryGroup implements Comparable<FryGroup> {
 
     @Override
     public String toString() {
-        return getName() + ":" + getPermissions().toString();
+        return getName() + ":" + permissions().toString();
     }
 
     public boolean isMetaGroup() {

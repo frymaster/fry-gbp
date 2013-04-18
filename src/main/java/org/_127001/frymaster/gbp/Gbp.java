@@ -1,7 +1,6 @@
 package org._127001.frymaster.gbp;
 
 import java.io.File;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// TODO: Allow inheritance from multiple groups
 // TODO: Implement commands to allow in-game altering of permissions instead of editing config file and using /reload
 // TODO: per-world permissions
 // TODO: Allow looking up group membership using SQL queries
@@ -30,8 +28,8 @@ public final class Gbp extends JavaPlugin {
     private FileConfiguration groupsConfig = null;
     private File usersFile = null;
     private File groupsFile = null;
-    private AbstractMap<String, FryGroup> groups = new HashMap<String, FryGroup>();
-    private AbstractMap<String, PermissionAttachment> players = new HashMap<String, PermissionAttachment>();
+    private Map<String, FryGroup> groups = new HashMap<String, FryGroup>();
+    private Map<String, PermissionAttachment> players = new HashMap<String, PermissionAttachment>();
     static Plugin plugin;
 
     @Override
@@ -92,12 +90,14 @@ public final class Gbp extends JavaPlugin {
             usersFile = new File(getDataFolder(), "users.yml");
         }
         if (!usersFile.exists()) {
+            this.getLogger().info("users.yml file does not exist, creating default");
             this.saveResource("users.yml", false);
         }
         usersConfig = YamlConfiguration.loadConfiguration(usersFile);
         usersConfig.setDefaults(YamlConfiguration.loadConfiguration(this.getResource("users.yml")));
 
         if (groupsFile == null) {
+            this.getLogger().info("groups.yml file does not exist, creating default");
             groupsFile = new File(getDataFolder(), "groups.yml");
         }
         if (!groupsFile.exists()) {
@@ -145,39 +145,52 @@ public final class Gbp extends JavaPlugin {
         }
         int priority = gc.getInt("priority", 0);
         boolean isDefault = gc.getBoolean("default", false);
-        String inherit = gc.getString("inherit", null);
+        List<String> inheritList = gc.getStringList("inherit");
         String file = gc.getString("file", null);
-        fg = new FryGroup(group, priority, inherit, file, isDefault);
+        List<FryGroup> inheritGroups = new ArrayList<FryGroup>();
 
-        AbstractMap<String, Boolean> perms = fg.getPermissions();
-        if (inherit != null) {
+        // From the list of groups to inherit from, get the actual group objects
+        if (inheritList.size() > 0) {
             if (breadcrumbs == null) {
                 breadcrumbs = new ArrayList<String>();
             }
             breadcrumbs.add(group);
-            if (breadcrumbs.contains(inherit)) {
-                getLogger().log(Level.SEVERE, "Inheritance loop detected trying to make {0} inherit from {1}", new Object[]{group, inherit});
-                fg.setInherit(null);
-            } else {
-                FryGroup parent = discoverGroup(inherit, breadcrumbs);
-                if (parent == null) {
-                    getLogger().log(Level.SEVERE, "Group: {0} tried to set a non-existent parent {1} - ignoring inherit setting", new Object[]{group, inherit});
-                    fg.setInherit(null);
+            for (Iterator<String> i = inheritList.iterator(); i.hasNext();) {
+                String inherit = i.next();
+
+                if (breadcrumbs.contains(inherit)) {
+                    getLogger().log(Level.SEVERE, "Inheritance loop detected trying to make {0} inherit from {1}", new Object[]{group, inherit});
+                    i.remove();
                 } else {
-                    perms.putAll(parent.getPermissions());
+                    FryGroup parent = discoverGroup(inherit, breadcrumbs);
+                    if (parent == null) {
+                        getLogger().log(Level.SEVERE, "Group: {0} tried to set a non-existent parent {1} - ignoring inherit setting", new Object[]{group, inherit});
+                        i.remove();
+                    } else {
+                        inheritGroups.add(parent);
+                    }
                 }
             }
         }
 
-        List<?> newPermissions = gc.getList("permissions");
-        if (newPermissions != null) {
-            for (Object o : newPermissions) {
-                String permission = o.toString();
-                if (permission.startsWith("-")) {
-                    perms.put(permission.substring(1), false);
-                } else {
-                    perms.put(permission, true);
-                }
+        // Put the inherited groups in priority order
+        Collections.sort(inheritGroups);
+
+        // Create new group object
+        fg = new FryGroup(group, priority, inheritList, file, isDefault);
+        Map<String, Boolean> perms = fg.permissions();
+
+        for (FryGroup parent : inheritGroups) {
+            perms.putAll(parent.permissions());
+        }
+
+        // Add whatever permissions this group explicitly adds
+        List<String> newPermissions = gc.getStringList("permissions");
+        for (String permission : newPermissions) {
+            if (permission.startsWith("-")) {
+                perms.put(permission.substring(1), false);
+            } else {
+                perms.put(permission, true);
             }
         }
 
@@ -242,7 +255,7 @@ public final class Gbp extends JavaPlugin {
         // Get adjusted permissions 
         HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
         for (FryGroup group : playerGroups) {
-            permissions.putAll(group.getPermissions());
+            permissions.putAll(group.permissions());
         }
 
         // Add player-specific permission overrides
