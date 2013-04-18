@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org._127001.frymaster</groupId>
     <artifactId>fry-gbp</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>fry-gbp</name>
     <packaging>jar</packaging>
     <url>http://frymaster.127001.org/</url>
@@ -73,7 +73,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <finalName>${artifactId}-test2</finalName>                   
+                    <finalName>${project.artifactId}</finalName>                   
                 </configuration>
             </plugin>       
         </plugins>
