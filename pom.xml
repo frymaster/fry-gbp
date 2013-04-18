@@ -8,6 +8,7 @@
     <artifactId>fry-gbp</artifactId>
     <version>1.0.1</version>
     <name>fry-gbp</name>
+    <packaging>jar</packaging>
     <url>http://frymaster.127001.org/</url>
     <repositories>
         <repository>
@@ -46,7 +47,6 @@
         </profile>
     </profiles>
     <build>
-        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -67,6 +67,14 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <finalName>${artifactId}</finalName>                   
+                </configuration>
+            </plugin>       
         </plugins>
     </build>
     <dependencies>
