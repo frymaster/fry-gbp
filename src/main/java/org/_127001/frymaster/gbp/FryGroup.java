@@ -22,64 +22,28 @@ public class FryGroup implements Comparable<FryGroup> {
     private File file = null;
 
     /**
-     * @return
-     * the
-     * group
-     * this
-     * group
-     * inherits
-     * permissions
-     * from,
-     * if
-     * any
+     * @return the group this group inherits permissions from, if any
      */
     public String getInherit() {
         return inherit;
     }
 
     /**
-     * @param
-     * inherit
-     * set
-     * what
-     * group
-     * this
-     * group
-     * will
-     * inherit
-     * permissions
-     * from
+     * @param inherit set what group this group will inherit permissions from
      */
     public void setInherit(String inherit) {
         this.inherit = inherit;
     }
 
     /**
-     * @return
-     * the
-     * file
-     * used
-     * to
-     * look
-     * up
-     * group
-     * membership
+     * @return the file used to look up group membership
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * @param
-     * file
-     * the
-     * file
-     * used
-     * to
-     * look
-     * up
-     * group
-     * membership
+     * @param file the file used to look up group membership
      */
     public void setFileName(String fileName) {
         this.file = null;
@@ -134,72 +98,49 @@ public class FryGroup implements Comparable<FryGroup> {
     }
 
     /**
-     * @return
-     * the
-     * defaultGroup
+     * @return the defaultGroup
      */
     public boolean isDefaultGroup() {
         return defaultGroup;
     }
 
     /**
-     * @param
-     * defaultGroup
-     * the
-     * defaultGroup
-     * to
-     * set
+     * @param defaultGroup the defaultGroup to set
      */
     public void setGroupIsDefault(boolean defaultGroup) {
         this.defaultGroup = defaultGroup;
     }
 
     /**
-     * @return
-     * the
-     * priority
+     * @return the priority
      */
     public int getPriority() {
         return priority;
     }
 
     /**
-     * @param
-     * priority
-     * the
-     * priority
-     * to
-     * set
+     * @param priority the priority to set
      */
     public void setPriority(int priority) {
         this.priority = priority;
     }
 
     /**
-     * @return
-     * the
-     * permissions
+     * @return the permissions
      */
     public AbstractMap<String, Boolean> getPermissions() {
         return permissions;
     }
 
     /**
-     * @return
-     * the
-     * name
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param
-     * name
-     * the
-     * name
-     * to
-     * set
+     * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;

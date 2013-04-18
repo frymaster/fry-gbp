@@ -47,7 +47,6 @@
         </profile>
     </profiles>
     <build>
-        <finalName>${project.name}-test</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>

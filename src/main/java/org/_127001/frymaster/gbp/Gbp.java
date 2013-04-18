@@ -58,32 +58,14 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Gets
-     * the
-     * group
-     * with
-     * the
-     * specified
-     * name
+     * Gets the group with the specified name
      *
-     * @param
-     * group
-     * Name
-     * of
-     * the
-     * group
+     * @param group Name of the group
      *
-     * @return
-     * The
-     * group
-     * object,
-     * or
-     * null
+     * @return The group object, or null
      */
     /**
-     * @return
-     * the
-     * usersConfig
+     * @return the usersConfig
      */
     public FileConfiguration getUsersConfig() {
         if (usersConfig == null) {
@@ -93,9 +75,7 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * @return
-     * the
-     * groupsConfig
+     * @return the groupsConfig
      */
     public FileConfiguration getGroupsConfig() {
         if (groupsConfig == null) {
@@ -105,10 +85,7 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Reload
-     * the
-     * YML
-     * files
+     * Reload the YML files
      */
     public void reloadConfigFiles() {
         if (usersFile == null) {
@@ -131,42 +108,9 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Rebuild
-     * the
-     * list
-     * of
-     * groups
-     * as
-     * well
-     * as
-     * what
-     * permissions
-     * each
-     * group
-     * will
-     * apply
-     * If
-     * the
-     * config
-     * files
-     * have
-     * already
-     * been
-     * parsed
-     * they
-     * are
-     * not
-     * reloaded
-     * Does
-     * not
-     * cause
-     * the
-     * permissions
-     * on
-     * existing
-     * players
-     * to
-     * change
+     * Rebuild the list of groups as well as what permissions each group will
+     * apply If the config files have already been parsed they are not reloaded
+     * Does not cause the permissions on existing players to change
      */
     public void recalculateGroups() {
         FileConfiguration gc = this.getGroupsConfig();
@@ -178,75 +122,15 @@ public final class Gbp extends JavaPlugin {
     }
 
     /**
-     * Returns
-     * the
-     * group
-     * object
-     * if
-     * it
-     * exists,
-     * or
-     * tries
-     * to
-     * create
-     * it
-     * if
-     * it
-     * does
-     * not.
-     * When
-     * calling
-     * this,
-     * the
-     * breadcrumbs
-     * parameter
-     * should
-     * always
-     * be
-     * null
-     * This
-     * is
-     * used
-     * internally
-     * in
-     * recursive
-     * calls
-     * to
-     * track
-     * possible
-     * inheritance
+     * Returns the group object if it exists, or tries to create it if it does
+     * not. When calling this, the breadcrumbs parameter should always be null
+     * This is used internally in recursive calls to track possible inheritance
      * loops
      *
-     * @param
-     * group
-     * Name
-     * of
-     * the
-     * group
-     * to
-     * return
-     * @param
-     * breadcrumbs
-     * Should
-     * always
-     * be
-     * null
-     * @return
-     * The
-     * group
-     * object,
-     * or
-     * null
-     * if
-     * the
-     * group
-     * is
-     * not
-     * specified
-     * in
-     * the
-     * configuration
-     * files
+     * @param group Name of the group to return
+     * @param breadcrumbs Should always be null
+     * @return The group object, or null if the group is not specified in the
+     * configuration files
      */
     private FryGroup discoverGroup(String group, List<String> breadcrumbs) {
 
