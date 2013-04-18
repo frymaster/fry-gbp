@@ -47,6 +47,7 @@
         </profile>
     </profiles>
     <build>
+        <finalName>${project.name}-test</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -72,7 +73,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <finalName>${artifactId}</finalName>                   
+                    <finalName>${artifactId}-test2</finalName>                   
                 </configuration>
             </plugin>       
         </plugins>
