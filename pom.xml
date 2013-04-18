@@ -1,12 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pluginVersion>${project.version} (build #${buildNumber})</pluginVersion>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org._127001.frymaster</groupId>
     <artifactId>fry-gbp</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>fry-gbp</name>
     <url>http://frymaster.127001.org/</url>
     <repositories>
@@ -15,7 +16,38 @@
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
     </repositories>
+    <profiles>
+        <profile>
+            <id>static_build_number</id>
+            <activation>
+                <property>
+                    <name>!env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>0</buildNumber>
+            </properties>
+        </profile>
+        <profile>
+            <id>dynamic_build_number</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>${env.BUILD_NUMBER}</buildNumber>
+            </properties>
+        </profile>
+        <profile>
+            <id>release-profile</id>
+            <properties>
+                <pluginVersion>${project.version}</pluginVersion>
+            </properties>
+        </profile>
+    </profiles>
     <build>
+        <finalName>${project.name}</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
