@@ -20,7 +20,7 @@ Features
 
 * Flatfile group membership lists that work like the built-in ops.txt file
 * Assign permissions and negative permissions to groups
-* A group can inherit permissions from one parent (which can have its own parent etc.) - these will be overridden by the explicitly set permissions
+* A group can inherit permissions from other groups (which can have their own parent etc.) - these will be overridden by the explicitly set permissions
 * Meta-groups called *all* and *ops* which represent everyone and ops, funnily enough
 * Can define "default" groups which people will be added to if and only if they have no explicit group memberships
 * Group priorities to determine what permissions take priority if someone is a member of many groups
@@ -31,18 +31,26 @@ What the plugin doesn't do
 
 This plugin is in early stages of development.  There are several standard features it doesn't yet support
 
-* Groups inheriting from multiple parents
 * In game commands - the only way to alter the configuration is to edit the files directly.  The group membership testfiles are read every time a player joins, but you will have to /reload if you make changes to the .yml files
 * Per world permissions - global only right now
 * Vault API integration
-* Limited time permissions
+* Time-limited permissions
 
 Future Features
 ---------------
 
-Ultimately the aim of this plugin is to read, and hopefully write, from arbitrary SQL databases.  This would mean it could, for example, query your forum **directly** to determine group membership.  Optionally you would be able to write memberships as well, and in the far future perhaps store most config items in a database as well, for distributed setups.
+Ultimately the aim of this plugin is to read, and hopefully write, from arbitrary mySQL databases.  This would mean it could, for example, query your forum **directly** to determine group membership.  Optionally you would be able to write memberships as well, and in the far future perhaps store most config items in a database as well, for distributed setups.
 
 Configuration
 -------------
 
 The groups.yml and users.yml files should be fairly self-explanatory.  If not, you should let me know what's confusing and I'll add more documentation
+
+IRC
+-----
+
+I idle in #bukkit and in my personal channel #frymaster on Espernet.  I am in the UK and are unlikely to respond immediately to queries except in the evening, UK time, but I log all messages and I **will** get back to you eventually.
+
+BukkitDev
+---------
+http://dev.bukkit.org/server-mods/fry-gbp/
