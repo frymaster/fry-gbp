@@ -46,6 +46,11 @@ Configuration
 
 The groups.yml and users.yml files should be fairly self-explanatory.  If not, you should let me know what's confusing and I'll add more documentation
 
+MCStats
+-------
+
+The plugin now includes stats tracking courtesy of [MCStats](http://mcstats.org/).  You can opt out of statistics on the plugin being sent to this service by editing the plugins/PluginMetrics/config.yml file.
+
 IRC
 -----
 

@@ -1,6 +1,7 @@
 package org._127001.frymaster.gbp;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import org.mcstats.Metrics;
+
 // TODO: Implement commands to allow in-game altering of permissions instead of editing config file and using /reload
 // TODO: per-world permissions
 // TODO: Allow looking up group membership using SQL queries
@@ -34,6 +37,13 @@ public final class Gbp extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            getLogger().info("Failed to connect to mcstats");
+            // Failed to submit the stats :-(
+        }
         Gbp.plugin = this;
         recalculateGroups();
         getServer().getPluginManager().registerEvents(new EventProcessor(this), this);
