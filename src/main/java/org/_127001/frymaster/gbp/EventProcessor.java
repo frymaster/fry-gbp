@@ -8,21 +8,20 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EventProcessor implements Listener {
 	
-	private Gbp plugin;
+	private PermissionCoordinator pc;
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerLogin(PlayerLoginEvent event) {
-		plugin.addPermissions(event.getPlayer());
+		pc.addPermissions(event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		plugin.removePermissions(event.getPlayer());
+		pc.removePermissions(event.getPlayer());
 	}
 	
-	public EventProcessor(Gbp plugin) {
-		this.plugin = plugin;
-		this.plugin.getLogger().info("Event processor instantiated");
+	public EventProcessor(PermissionCoordinator pc) {
+		this.pc = pc;
 	}
 	
 

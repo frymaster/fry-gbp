@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class FryGroup implements Comparable<FryGroup> {
 
@@ -22,6 +22,7 @@ public class FryGroup implements Comparable<FryGroup> {
     private List<String> inheritList = null;
     private String fileName = null;
     private File file = null;
+    private Plugin plugin;
 
     /**
      * @return the list of groups this group inherits permissions from, if any
@@ -43,12 +44,12 @@ public class FryGroup implements Comparable<FryGroup> {
     public void setFileName(String fileName) {
         this.file = null;
         if (fileName != null && isMetaGroup()) {
-            Gbp.plugin.getLogger().log(Level.WARNING, "Filename specified for group {0}- ignoring", getName());
+            plugin.getLogger().log(Level.WARNING, "Filename specified for group {0}- ignoring", getName());
             this.fileName = null;
         } else if (fileName == null && !isMetaGroup()) {
-            Gbp.plugin.getLogger().log(Level.INFO, "No file specified for group {0}", getName());
+            plugin.getLogger().log(Level.INFO, "No file specified for group {0}", getName());
             if (!isDefaultGroup()) {
-                Gbp.plugin.getLogger().log(Level.WARNING, "Group {0} can never have any members", getName());
+                plugin.getLogger().log(Level.WARNING, "Group {0} can never have any members", getName());
             }
         } else {
             this.fileName = fileName;
@@ -65,26 +66,26 @@ public class FryGroup implements Comparable<FryGroup> {
         File newFile = new File(getFileName());
         // Unless the filename is fully-qualified, use one relative to the plugin's directory
         if (!newFile.isAbsolute()) {
-            newFile = new File(Gbp.plugin.getDataFolder(), getFileName());
+            newFile = new File(plugin.getDataFolder(), getFileName());
         }
         // if it's an existing file we don't have to create it
         if (newFile.isFile()) {
             //but warn if it can't be written to
             if (!newFile.canWrite()) {
-                Gbp.plugin.getLogger().log(Level.WARNING, "Group {0} file {1} can not be written to", new Object[]{getName(), newFile.getAbsolutePath()});
+                plugin.getLogger().log(Level.WARNING, "Group {0} file {1} can not be written to", new Object[]{getName(), newFile.getAbsolutePath()});
             }
         } else if (newFile.exists()) {
             //exists but isn't a file - presumably a directory or similar
-            Gbp.plugin.getLogger().log(Level.SEVERE, "Group {0} file {1} is not a valid filename", new Object[]{getName(), newFile.getAbsolutePath()});
+            plugin.getLogger().log(Level.SEVERE, "Group {0} file {1} is not a valid filename", new Object[]{getName(), newFile.getAbsolutePath()});
             return null;
         } else {
             //needs created
-            Gbp.plugin.getLogger().log(Level.INFO, "Group {0} members file does not exist, creating", getName());
+            plugin.getLogger().log(Level.INFO, "Group {0} members file does not exist, creating", getName());
             try {
                 newFile.createNewFile();
             } catch (IOException e) {
-                Gbp.plugin.getLogger().log(Level.SEVERE, "File {0} could not be created", newFile.getAbsolutePath());
-                Gbp.plugin.getLogger().severe(e.toString());
+                plugin.getLogger().log(Level.SEVERE, "File {0} could not be created", newFile.getAbsolutePath());
+                plugin.getLogger().severe(e.toString());
                 return null;
             }
         }
@@ -167,8 +168,9 @@ public class FryGroup implements Comparable<FryGroup> {
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public FryGroup(String name, int priority, List<String> inherit, String file, boolean isDefault) {
+    public FryGroup(Plugin plugin,String name, int priority, List<String> inherit, String file, boolean isDefault) {
         super();
+        this.plugin = plugin;
         this.setPriority(priority);
         this.setName(name);
         this.inheritList = inherit;
@@ -209,11 +211,11 @@ public class FryGroup implements Comparable<FryGroup> {
                 }
                 br.close();
             } catch (FileNotFoundException e) {
-                Gbp.plugin.getLogger().log(Level.WARNING, "Group {0} File not found trying to read group membership in file {1}", new Object[]{this.getName(), f.getAbsolutePath()});
+                plugin.getLogger().log(Level.WARNING, "Group {0} File not found trying to read group membership in file {1}", new Object[]{this.getName(), f.getAbsolutePath()});
                 return false;
             } catch (IOException e) {
-                Gbp.plugin.getLogger().log(Level.SEVERE, "Group {0} IOException to read group membership in file {1}", new Object[]{this.getName(), f.getAbsolutePath()});
-                Gbp.plugin.getLogger().severe(e.toString());
+                plugin.getLogger().log(Level.SEVERE, "Group {0} IOException to read group membership in file {1}", new Object[]{this.getName(), f.getAbsolutePath()});
+                plugin.getLogger().severe(e.toString());
             }
         }
         return false;
