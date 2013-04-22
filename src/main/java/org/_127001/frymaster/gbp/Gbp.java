@@ -59,7 +59,11 @@ public final class Gbp extends JavaPlugin {
         for (Map.Entry<String, PermissionAttachment> entry : players.entrySet()) {
             Player p = getServer().getPlayer(entry.getKey());
             if (p != null) {
+                try {
                 p.removeAttachment(entry.getValue());
+                } catch (IllegalArgumentException e){
+                    // Attachment was already invalid somehow, do nothing
+                }
             }
         }
         players.clear();
@@ -210,6 +214,14 @@ public final class Gbp extends JavaPlugin {
     }
 
     public void addPermissions(Player player) {
+        PermissionAttachment pa = players.remove(player.getName());
+        if (pa != null) {
+            try {
+                player.removeAttachment(pa);
+            } catch (IllegalArgumentException e){
+                // In all probability this was invalid
+            }
+        }
         boolean isInNonMetaGroups = false;
         ConfigurationSection pc = this.getUsersConfig().getConfigurationSection(player.getName());
         List<FryGroup> playerGroups = new ArrayList<FryGroup>();
@@ -285,7 +297,7 @@ public final class Gbp extends JavaPlugin {
 
 
         // Add permissions to player
-        PermissionAttachment pa = player.addAttachment(this);
+        pa = player.addAttachment(this);
         for (Map.Entry<String, Boolean> entry : permissions.entrySet()) {
             pa.setPermission(entry.getKey(), entry.getValue());
         }
@@ -297,10 +309,13 @@ public final class Gbp extends JavaPlugin {
     }
 
     public void removePermissions(Player player) {
-        PermissionAttachment pa = players.get(player.getName());
+        PermissionAttachment pa = players.remove(player.getName());
         if (pa != null) {
-            player.removeAttachment(pa);
-            players.remove(player.getName());
+            try {
+                player.removeAttachment(pa);
+            } catch (IllegalArgumentException e){
+                
+            }
         }
     }
 }
