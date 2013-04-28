@@ -39,7 +39,7 @@ public class PermissionCoordinator {
      * apply If the config files have already been parsed they are not reloaded
      * Does not cause the permissions on existing players to change
      */
-    public void recalculateGroups() {
+    void recalculateGroups() {
         FileConfiguration gc = this.getGroupsConfig();
         Set<String> groupNames = gc.getKeys(false);
         // Iterate through all the groupnames to cause their objects to be created
@@ -126,7 +126,7 @@ public class PermissionCoordinator {
 
     }
 
-    public void addPermissions(Player player) {
+    void addPermissions(Player player) {
         PermissionAttachment pa = players.remove(player.getName());
         if (pa != null) {
             try {
@@ -221,7 +221,7 @@ public class PermissionCoordinator {
 
     }
 
-    public void removePermissions(Player player) {
+    void removePermissions(Player player) {
         PermissionAttachment pa = players.remove(player.getName());
         if (pa != null) {
             try {
@@ -231,7 +231,7 @@ public class PermissionCoordinator {
         }
     }
     
-    public void removePermissions(String player) {
+    void removePermissions(String player) {
         Player p = plugin.getServer().getPlayer(player);
         if (p!=null) {
             removePermissions(p);
@@ -248,7 +248,7 @@ public class PermissionCoordinator {
     /**
      * @return the usersConfig
      */
-    public FileConfiguration getUsersConfig() {
+    private FileConfiguration getUsersConfig() {
         if (usersConfig == null) {
             reloadConfigFiles();
         }
@@ -258,7 +258,7 @@ public class PermissionCoordinator {
     /**
      * @return the groupsConfig
      */
-    public FileConfiguration getGroupsConfig() {
+    private FileConfiguration getGroupsConfig() {
         if (groupsConfig == null) {
             reloadConfigFiles();
         }
@@ -268,7 +268,7 @@ public class PermissionCoordinator {
     /**
      * Reload the YML files
      */
-    public void reloadConfigFiles() {
+    void reloadConfigFiles() {
         if (usersFile == null) {
             usersFile = new File(plugin.getDataFolder(), "users.yml");
         }
@@ -301,5 +301,9 @@ public class PermissionCoordinator {
             removePermissions(player);
         }
         players.clear();
+    }
+    
+    Plugin getPlugin() {
+        return plugin;
     }
 }

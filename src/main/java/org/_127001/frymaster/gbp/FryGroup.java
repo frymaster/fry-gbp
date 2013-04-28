@@ -27,21 +27,21 @@ public class FryGroup implements Comparable<FryGroup> {
     /**
      * @return the list of groups this group inherits permissions from, if any
      */
-    public List<String> inheritList() {
+    List<String> inheritList() {
         return inheritList;
     }
 
     /**
      * @return the file used to look up group membership
      */
-    public String getFileName() {
+    String getFileName() {
         return fileName;
     }
 
     /**
      * @param file the file used to look up group membership
      */
-    public void setFileName(String fileName) {
+    void setFileName(String fileName) {
         this.file = null;
         if (fileName != null && isMetaGroup()) {
             plugin.getLogger().log(Level.WARNING, "Filename specified for group {0}- ignoring", getName());
@@ -56,7 +56,7 @@ public class FryGroup implements Comparable<FryGroup> {
         }
     }
 
-    public File getFile() {
+    File getFile() {
         if (file != null) {
             return file;
         }
@@ -96,49 +96,49 @@ public class FryGroup implements Comparable<FryGroup> {
     /**
      * @return the defaultGroup
      */
-    public boolean isDefaultGroup() {
+    boolean isDefaultGroup() {
         return defaultGroup;
     }
 
     /**
      * @param defaultGroup the defaultGroup to set
      */
-    public void setGroupIsDefault(boolean defaultGroup) {
+    void setGroupIsDefault(boolean defaultGroup) {
         this.defaultGroup = defaultGroup;
     }
 
     /**
      * @return the priority
      */
-    public int getPriority() {
+    int getPriority() {
         return priority;
     }
 
     /**
      * @param priority the priority to set
      */
-    public void setPriority(int priority) {
+    void setPriority(int priority) {
         this.priority = priority;
     }
 
     /**
      * @return the permissions
      */
-    public Map<String, Boolean> permissions() {
+    Map<String, Boolean> permissions() {
         return permissions;
     }
 
     /**
      * @return the name
      */
-    public String getName() {
+    String getName() {
         return name;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -168,7 +168,7 @@ public class FryGroup implements Comparable<FryGroup> {
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public FryGroup(Plugin plugin,String name, int priority, List<String> inherit, String file, boolean isDefault) {
+    FryGroup(Plugin plugin,String name, int priority, List<String> inherit, String file, boolean isDefault) {
         super();
         this.plugin = plugin;
         this.setPriority(priority);
@@ -186,11 +186,11 @@ public class FryGroup implements Comparable<FryGroup> {
         return getName() + ":" + permissions().toString();
     }
 
-    public boolean isMetaGroup() {
+    boolean isMetaGroup() {
         return (getName().equals("ops") || getName().equals("all"));
     }
 
-    public boolean isMember(Player player) {
+    boolean isMember(Player player) {
         if (getName().equals("all")) {
             return true;
         }

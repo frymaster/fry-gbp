@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class EventProcessor implements Listener {
+class EventProcessor implements Listener {
 	
 	private PermissionCoordinator pc;
 
@@ -20,7 +20,7 @@ public class EventProcessor implements Listener {
 		pc.removePermissions(event.getPlayer());
 	}
 	
-	public EventProcessor(PermissionCoordinator pc) {
+	EventProcessor(PermissionCoordinator pc) {
 		this.pc = pc;
 	}
 	
