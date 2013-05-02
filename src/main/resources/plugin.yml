@@ -4,3 +4,12 @@ description: Permissions plugin focussed around easy administering of group memb
 author: frymaster@127001.org
 website: http://frymaster.127001.org
 main: org._127001.frymaster.gbp.Gbp
+commands:
+  gbp:
+    description: Manage permissions
+    usage: /<command> help
+    permission: fry-gpb.manage
+permissions:
+  gbp:
+    description: Manage permissions
+    default: op   

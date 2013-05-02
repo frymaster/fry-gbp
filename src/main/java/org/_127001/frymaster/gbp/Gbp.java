@@ -24,16 +24,15 @@ public final class Gbp extends JavaPlugin {
         }
         pc = new PermissionCoordinator(this);
 
-        pc.recalculateGroups();
+        pc.startup();
+        
         getServer().getPluginManager().registerEvents(new EventProcessor(pc), this);
-
-        //If we've been reloaded, players may already be online
-        pc.addAllPlayers();
+        getCommand("gbp").setExecutor(new CommandProcessor(pc));
     }
 
     @Override
     public void onDisable() {
-        pc.removeAllPlayers();
+        pc.shutdown();
         pc = null;
     }
 }

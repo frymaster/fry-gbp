@@ -39,7 +39,8 @@ public class PermissionCoordinator {
      * apply If the config files have already been parsed they are not reloaded
      * Does not cause the permissions on existing players to change
      */
-    void recalculateGroups() {
+    void calculateGroups() {
+        groups.clear();
         FileConfiguration gc = this.getGroupsConfig();
         Set<String> groupNames = gc.getKeys(false);
         // Iterate through all the groupnames to cause their objects to be created
@@ -305,5 +306,19 @@ public class PermissionCoordinator {
     
     Plugin getPlugin() {
         return plugin;
+    }
+
+    void shutdown() {
+        removeAllPlayers();
+        groupsConfig = null;
+        groupsFile = null;
+        usersConfig = null;
+        usersFile = null;
+    }
+
+    void startup() {
+        calculateGroups();
+        //If we've been reloaded, players may already be online
+        addAllPlayers();
     }
 }
