@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.configuration.ConfigurationSection;
@@ -105,7 +106,7 @@ public class PermissionCoordinator {
         Collections.sort(inheritGroups);
 
         // Create new group object
-        fg = new FryGroup(plugin,group, priority, inheritList, file, isDefault);
+        fg = new FryGroup(plugin, group, priority, inheritList, file, isDefault);
         Map<String, Boolean> perms = fg.permissions();
 
         for (FryGroup parent : inheritGroups) {
@@ -231,13 +232,6 @@ public class PermissionCoordinator {
             }
         }
     }
-    
-    void removePermissions(String player) {
-        Player p = plugin.getServer().getPlayer(player);
-        if (p!=null) {
-            removePermissions(p);
-        }
-    }
 
     /**
      * Gets the group with the specified name
@@ -298,12 +292,13 @@ public class PermissionCoordinator {
     }
 
     void removeAllPlayers() {
-        for (String player : players.keySet()) {
-            removePermissions(player);
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            removePermissions(p);
         }
         players.clear();
+
     }
-    
+
     Plugin getPlugin() {
         return plugin;
     }
