@@ -7,9 +7,12 @@
 #Priority determines what order permissions are evaluated in
 #Lower numbers are evaluated first.  Whichever group gets the last word, wins
 #It probably makes sense to give the meta-groups low priority, so your more specific
-#groups can override
+#  groups can override
 #If two groups have the same priority behaviour is NOT guaranteed
 #If a priority is not specified, 0 will be used
+
+#gbp.manage is the permission needed to use in-game permission commands. By default
+#  all ops have this permission.
 
 all:
   permissions:
@@ -49,4 +52,4 @@ ops:
 #    - members
 #  permissions:
 #    - bukkit.command.kick
-#    - somePlugin.modPermission
+#    - fry-gpb.manage
