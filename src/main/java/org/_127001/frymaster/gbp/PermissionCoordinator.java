@@ -2,6 +2,7 @@ package org._127001.frymaster.gbp;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -315,5 +316,9 @@ public class PermissionCoordinator {
         calculateGroups();
         //If we've been reloaded, players may already be online
         addAllPlayers();
+    }
+
+    Collection<FryGroup> getGroups() {
+        return groups.values();
     }
 }
