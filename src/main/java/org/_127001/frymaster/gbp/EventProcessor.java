@@ -16,7 +16,7 @@ class EventProcessor implements Listener {
         pc.addPermissions(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         pc.removePermissions(event.getPlayer());
     }
