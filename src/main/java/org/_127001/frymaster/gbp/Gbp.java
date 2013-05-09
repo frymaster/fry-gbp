@@ -1,6 +1,7 @@
 package org._127001.frymaster.gbp;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.mcstats.Metrics;
@@ -15,6 +16,7 @@ public final class Gbp extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getLogger().setLevel(Level.ALL);
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();

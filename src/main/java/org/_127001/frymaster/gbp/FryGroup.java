@@ -18,6 +18,7 @@ public class FryGroup implements Comparable<FryGroup> {
     private int priority = 0;
     private String name = null;
     private Map<String, Boolean> permissions;
+    private Map<String,Map<String,Boolean>> perWorldPermissions;
     private boolean defaultGroup = false;
     private List<String> inheritList = null;
     private String fileName = null;
@@ -127,6 +128,10 @@ public class FryGroup implements Comparable<FryGroup> {
     Map<String, Boolean> permissions() {
         return permissions;
     }
+    
+    Map<String,Map<String,Boolean>> perWorldPermissions() {
+        return perWorldPermissions;
+    }
 
     /**
      * @return the name
@@ -178,6 +183,7 @@ public class FryGroup implements Comparable<FryGroup> {
         this.setFileName(file);
 
         permissions = new HashMap<String, Boolean>();
+        perWorldPermissions = new HashMap<String,Map<String,Boolean>>();
         this.getFile();	// To show filename errors now rather than on first use;
     }
 

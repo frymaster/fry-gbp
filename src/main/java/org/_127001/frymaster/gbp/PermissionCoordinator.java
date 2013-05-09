@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.configuration.ConfigurationSection;
@@ -123,6 +122,45 @@ public class PermissionCoordinator {
                 perms.put(permission, true);
             }
         }
+        
+        // Same for per-world permissions
+        Map<String, Map<String, Boolean>> pwPerms = fg.perWorldPermissions();
+        // Iterate through groups
+        for (FryGroup parent : inheritGroups) {
+            Map<String, Map<String, Boolean>> parentPwPerms = parent.perWorldPermissions();
+            // Iterate through each world in each group
+            for (String world : parentPwPerms.keySet()) {
+                // Get the permissions set for this world in the new group, creating anew if needed
+                Map<String, Boolean> p = pwPerms.get(world);
+                if (p == null) {
+                    p = new HashMap<String, Boolean>();
+                    pwPerms.put(world, p);
+                }
+                // Finally, apply permissions from the parent to the new group
+                p.putAll(parentPwPerms.get(world));
+            }
+        }
+
+        // Add explicit per-world permissions
+        ConfigurationSection wc = gc.getConfigurationSection("worlds");
+        if (wc != null) {
+            for (String world : wc.getKeys(false)) {
+                // Get the permissions set for this world in the new group, creating anew if needed
+                Map<String, Boolean> p = pwPerms.get(world);
+                if (p == null) {
+                    p = new HashMap<String, Boolean>();
+                    pwPerms.put(world, p);
+                }
+                List<String> newPwPermissions = wc.getStringList(world);
+                for (String permission : newPwPermissions) {
+                    if (permission.startsWith("-")) {
+                        p.put(permission.substring(1), false);
+                    } else {
+                        p.put(permission, true);
+                    }
+                }
+            }
+        }
 
         groups.put(group, fg);
         return fg;
@@ -194,14 +232,18 @@ public class PermissionCoordinator {
         HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
         for (FryGroup group : playerGroups) {
             permissions.putAll(group.permissions());
+            Map<String,Boolean> pw = group.perWorldPermissions().get(player.getWorld().getName());
+            if (pw != null) {
+                permissions.putAll(pw);
+            }
         }
 
         // Add player-specific permission overrides
+        // TODO: world-specific player overrides
         if (pc != null) {
-            List<?> permissionOverrides = pc.getList("permissions");
+            List<String> permissionOverrides = pc.getStringList("permissions");
             if (permissionOverrides != null) {
-                for (Object o : permissionOverrides) {
-                    String permission = o.toString();
+                for (String permission : permissionOverrides) {
                     if (permission.startsWith("-")) {
                         permissions.put(permission.substring(1), false);
                     } else {
@@ -210,7 +252,6 @@ public class PermissionCoordinator {
                 }
             }
         }
-
 
         // Add permissions to player
         pa = player.addAttachment(plugin);

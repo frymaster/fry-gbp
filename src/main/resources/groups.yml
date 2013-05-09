@@ -27,6 +27,7 @@ ops:
 #Set "default: true" to make a default group
 #Users are considered members of a default group if they are members of the group
 #OR if they are not explicit members of any group
+#Per-world permissions are in the worlds: section
 
 #file sets the filename to use for storing memberships.  You don't need this if
 #  the group is only used for defaults or inheriting
@@ -44,6 +45,11 @@ ops:
 #  permissions:
 #    - someTeleportPlugin.tp
 #    - -somePlugin.modPermission
+#  worlds:
+#    noJumpingWorld:
+#      - -somePlugin.jumping
+#    flyingAllowedWorld:
+#      - somePlugin.fly
 
 #mods:
 #  priority: 120
