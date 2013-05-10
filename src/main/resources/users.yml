@@ -8,6 +8,9 @@
 #  permissions:
 #    - become.herobrine
 #    - -shave.beard
+#  worlds:
+#    notchWorld:
+#      - somePlugin.deity
 #  groups:
 #    - mojang
 #    - -scumbags

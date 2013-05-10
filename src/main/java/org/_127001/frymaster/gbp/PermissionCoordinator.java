@@ -122,7 +122,7 @@ public class PermissionCoordinator {
                 perms.put(permission, true);
             }
         }
-        
+
         // Same for per-world permissions
         Map<String, Map<String, Boolean>> pwPerms = fg.perWorldPermissions();
         // Iterate through groups
@@ -232,7 +232,7 @@ public class PermissionCoordinator {
         HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
         for (FryGroup group : playerGroups) {
             permissions.putAll(group.permissions());
-            Map<String,Boolean> pw = group.perWorldPermissions().get(player.getWorld().getName());
+            Map<String, Boolean> pw = group.perWorldPermissions().get(player.getWorld().getName());
             if (pw != null) {
                 permissions.putAll(pw);
             }
@@ -244,6 +244,18 @@ public class PermissionCoordinator {
             List<String> permissionOverrides = pc.getStringList("permissions");
             if (permissionOverrides != null) {
                 for (String permission : permissionOverrides) {
+                    if (permission.startsWith("-")) {
+                        permissions.put(permission.substring(1), false);
+                    } else {
+                        permissions.put(permission, true);
+                    }
+                }
+            }
+
+            ConfigurationSection wc = pc.getConfigurationSection("worlds");
+            if (wc != null) {
+                List<String> pwPermissionOverrides = wc.getStringList(player.getWorld().getName());
+                for (String permission : pwPermissionOverrides) {
                     if (permission.startsWith("-")) {
                         permissions.put(permission.substring(1), false);
                     } else {
