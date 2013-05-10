@@ -61,7 +61,7 @@ class CommandProcessor implements CommandExecutor {
 
     private boolean listGroups(CommandSender sender, String[] args) {
         Collection<FryGroup> groups = pc.getGroups();
-        List<String> messages = new LinkedList();
+        List<String> messages = new LinkedList<String>();
         messages.add("Groups: (" + ChatColor.RED + "built-in, " + ChatColor.GREEN + "default, " + ChatColor.LIGHT_PURPLE + "both" + ChatColor.RESET + ")");
         StringBuilder sb = new StringBuilder();
         boolean first = true;
