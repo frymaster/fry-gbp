@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
 // TODO: Implement commands to allow in-game altering of permissions instead of editing config file and using /reload
-// TODO: per-world permissions
 // TODO: Allow looking up group membership using SQL queries
 // TODO: Vault integration
 public final class Gbp extends JavaPlugin {
