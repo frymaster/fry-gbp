@@ -228,18 +228,18 @@ public class PermissionCoordinator {
         // Put groups in priority order
         Collections.sort(playerGroups);
 
-        // Get adjusted permissions 
+        // Get global and specific world permissions
         HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> pwPermissions = new HashMap<String, Boolean>();
         for (FryGroup group : playerGroups) {
             permissions.putAll(group.permissions());
             Map<String, Boolean> pw = group.perWorldPermissions().get(player.getWorld().getName());
             if (pw != null) {
-                permissions.putAll(pw);
+                pwPermissions.putAll(pw);
             }
         }
 
         // Add player-specific permission overrides
-        // TODO: world-specific player overrides
         if (pc != null) {
             List<String> permissionOverrides = pc.getStringList("permissions");
             if (permissionOverrides != null) {
@@ -257,14 +257,17 @@ public class PermissionCoordinator {
                 List<String> pwPermissionOverrides = wc.getStringList(player.getWorld().getName());
                 for (String permission : pwPermissionOverrides) {
                     if (permission.startsWith("-")) {
-                        permissions.put(permission.substring(1), false);
+                        pwPermissions.put(permission.substring(1), false);
                     } else {
-                        permissions.put(permission, true);
+                        pwPermissions.put(permission, true);
                     }
                 }
             }
         }
 
+        // Overlay per-world permissions on top of global ones
+        permissions.putAll(pwPermissions);
+        
         // Add permissions to player
         pa = player.addAttachment(plugin);
         for (Map.Entry<String, Boolean> entry : permissions.entrySet()) {
