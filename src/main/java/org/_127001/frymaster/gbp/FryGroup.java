@@ -147,10 +147,11 @@ public class FryGroup implements Comparable<FryGroup> {
         this.name = name;
     }
 
-    @Override
     public int compareTo(FryGroup arg0) {
-        return Integer.compare(this.getPriority(), arg0.getPriority());
+        return this.getPriority() - arg0.getPriority();
     }
+    
+    
 
     @Override
     public int hashCode() {
