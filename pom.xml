@@ -43,12 +43,6 @@
                 <buildNumber>${env.BUILD_NUMBER}</buildNumber>
             </properties>
         </profile>
-        <profile>
-            <id>release-profile</id>
-            <properties>
-                <pluginVersion>${project.version}</pluginVersion>
-            </properties>
-        </profile>
     </profiles>
     <build>
         <resources>
