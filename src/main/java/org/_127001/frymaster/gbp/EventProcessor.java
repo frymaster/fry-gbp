@@ -23,7 +23,7 @@ class EventProcessor implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
-        pc.removePermissions(event.getPlayer());
+        //pc.removePermissions(event.getPlayer());
         pc.addPermissions(event.getPlayer());
     }
 

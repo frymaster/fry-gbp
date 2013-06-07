@@ -269,11 +269,15 @@ public class PermissionCoordinator {
         permissions.putAll(pwPermissions);
         
         // Add permissions to player
-        pa = player.addAttachment(plugin);
-        for (Map.Entry<String, Boolean> entry : permissions.entrySet()) {
-            pa.setPermission(entry.getKey(), entry.getValue());
+        pa = players.get(player.getName());
+        if (pa == null) {
+            pa = player.addAttachment(plugin);
         }
-
+//        for (Map.Entry<String, Boolean> entry : permissions.entrySet()) {
+//            pa.setPermission(entry.getKey(), entry.getValue());
+//        }
+        
+        pa.resetPermissions(permissions);
         players.put(player.getName(), pa);
 
 
