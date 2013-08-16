@@ -7,7 +7,7 @@ main: org._127001.frymaster.gbp.Gbp
 commands:
   gbp:
     description: Manage permissions
-    usage: /<command> help
+    usage: /<command> help for command overview
     permission: gbp.manage
 permissions:
   gbp:
